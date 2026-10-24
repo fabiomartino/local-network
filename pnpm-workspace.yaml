@@ -1,0 +1,3 @@
+allowBuilds:
+  swiftlint: true
+  unrs-resolver: true

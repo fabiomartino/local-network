@@ -1,0 +1,129 @@
+<app-page-header title="Local Network" />
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Permission state
+        <ion-badge [color]="stateColor()">{{ permission() }}</ion-badge>
+      </ion-card-title>
+      <ion-card-subtitle>android.permission.ACCESS_LOCAL_NETWORK</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-icon slot="start" name="shield-checkmark" />
+          <ion-label>
+            Platform
+            <p>{{ platform() }}{{ isNative() ? ' (native)' : ' (browser)' }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <div class="actions">
+        <ion-button [disabled]="busy()" (click)="check()">
+          <ion-icon slot="start" name="refresh" />
+          checkPermissions()
+        </ion-button>
+        <ion-button [disabled]="busy()" fill="outline" (click)="request()">
+          requestPermissions()
+        </ion-button>
+        @if (busy()) {
+          <ion-spinner name="dots" />
+        }
+      </div>
+
+      @if (error(); as message) {
+        <ion-item color="danger" lines="none">
+          <ion-icon slot="start" name="close-circle" />
+          <ion-label class="ion-text-wrap">{{ message }}</ion-label>
+        </ion-item>
+      }
+
+      <ion-note>
+        Android 17+ (API 37) reports the real runtime state. Older Android versions, iOS and the web
+        do not enforce this permission and always report <code>granted</code>. A denied decision is
+        returned as state, not as an error.
+      </ion-note>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Permission change events
+        @if (listening()) {
+          <ion-badge color="success">listening</ion-badge>
+        }
+      </ion-card-title>
+      <ion-card-subtitle>addListener('permissionChange', ...)</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="actions">
+        <ion-button
+          [disabled]="busy()"
+          [color]="listening() ? 'danger' : 'primary'"
+          (click)="toggleListening()"
+        >
+          <ion-icon slot="start" name="notifications" />
+          {{ listening() ? 'Stop listening' : 'Start listening' }}
+        </ion-button>
+        <ion-button [disabled]="busy()" fill="outline" (click)="removeAllListeners()">
+          removeAllListeners()
+        </ion-button>
+      </div>
+
+      @if (events().length) {
+        <ion-list>
+          @for (entry of events(); track $index) {
+            <ion-item lines="inset">
+              <ion-label>
+                <ion-text>
+                  <strong>{{ entry.state }}</strong>
+                </ion-text>
+                <p>{{ entry.receivedAt }}</p>
+              </ion-label>
+            </ion-item>
+          }
+        </ion-list>
+        <ion-button fill="clear" size="small" (click)="clearEvents()">
+          <ion-icon slot="start" name="trash" />
+          Clear log
+        </ion-button>
+      } @else {
+        <ion-note>
+          No events yet. The event fires when the permission state changes, for example after
+          returning from system settings.
+        </ion-note>
+      }
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Plugin info</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-chip>
+        <ion-icon name="information-circle" />
+        <ion-label>getPluginVersion()</ion-label>
+      </ion-chip>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-label>
+            Version
+            <p>{{ version() ?? 'loading...' }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-note>
+        On native platforms this is the native plugin version. On the web it is the JavaScript
+        package version.
+      </ion-note>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<app-page-footer [version]="version()" label="Plugin Version" />
