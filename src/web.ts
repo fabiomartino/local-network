@@ -1,7 +1,7 @@
 import { WebPlugin } from '@capacitor/core';
 
-import { LocalNetworkPermissions, LocalNetworkPlugin, PluginVersionResult } from './definitions';
-import { PLUGIN_VERSION } from './version';
+import { LocalNetworkPermissions, LocalNetworkPlugin, PluginVersionResult } from './definitions.js';
+import { PLUGIN_VERSION } from './version.js';
 
 export class LocalNetworkWeb extends WebPlugin implements LocalNetworkPlugin {
   private lastPermissionState = 'granted' as const;

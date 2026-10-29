@@ -33,7 +33,7 @@
     "native",
     "local-network"
   ],
-  "packageManager": "pnpm@12.15.0",
+  "packageManager": "pnpm@12.16.1",
   "scripts": {
     "verify": "pnpm run verify:ios && pnpm run verify:android && pnpm run verify:web",
     "verify:ios": "node ./scripts/sync-version.mjs && xcodebuild -scheme CapacitorCommunityLocalNetwork -destination generic/platform=iOS",
@@ -66,10 +66,10 @@
     "prettier": "^3.9.10",
     "prettier-plugin-java": "^2.11.0",
     "rimraf": "^6.1.3",
-    "rollup": "^4.65.0",
+    "rollup": "^4.66.0",
     "swiftlint": "^2.0.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.0"
+    "typescript-eslint": "^8.72.1"
   },
   "peerDependencies": {
     "@capacitor/core": ">=8.0.0"
